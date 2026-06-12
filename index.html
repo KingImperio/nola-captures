@@ -23,9 +23,18 @@
     <!-- Novatrix WebGL shader background -->
     <div id="novatrix-mount" aria-hidden="true"></div>
 
+    <!-- Dark overlay for text readability against shader -->
+    <div class="hero__overlay-bg" aria-hidden="true"></div>
+
     <nav class="navbar" aria-label="Primary">
       <a href="#home" class="navbar__logo">Nola's Captures</a>
-      <button class="navbar__menu-btn" aria-label="Toggle menu">Menu</button>
+      <div class="navbar__links" id="navbar-links">
+        <a href="#about" class="navbar__link">About</a>
+        <a href="#services" class="navbar__link">Services</a>
+        <a href="#work" class="navbar__link">Work</a>
+        <a href="#contact" class="navbar__link">Contact</a>
+      </div>
+      <button class="navbar__menu-btn" id="menu-btn" aria-label="Toggle menu">Menu</button>
     </nav>
 
     <div class="hero__overlay">
@@ -49,9 +58,9 @@
     <div class="container">
       <div class="about">
         <div class="about__image" data-tilt data-tilt-max="4" data-tilt-glare="true">
-          <img src="https://picsum.photos/seed/aarinola-work/600/800"
+          <img src="images/about.jpg"
                alt="Aarinola behind the camera"
-               width="600" height="800" loading="lazy">
+               width="600" height="800">
         </div>
         <div class="about__body">
           <h2 class="section-title">The eye behind the lens</h2>
@@ -79,41 +88,47 @@
   <section class="section section--raised" id="services">
     <div class="container">
       <h2 class="section-title section-title--center">What I do</h2>
-      <div class="services">
-        <article class="service-card">
-          <div class="service-card__img">
-            <img src="https://picsum.photos/seed/event-cover/800/600"
-                 alt="Event coverage" width="800" height="600" loading="lazy">
+      <div class="stack-cards">
+        <article class="stack-cards__item" data-index="0">
+          <div class="stack-cards__img">
+            <img src="images/event-cover.jpg"
+                 alt="Event coverage" width="800" height="600">
           </div>
-          <h3 class="service-card__name">Events</h3>
-          <p class="service-card__desc">
-            Weddings, birthdays, launches — the moments that matter, captured as they unfold.
-          </p>
-          <a href="#contact" class="service-card__link">DM to discuss rates ↗</a>
+          <div class="stack-cards__body">
+            <h3 class="stack-cards__name">Events</h3>
+            <p class="stack-cards__desc">
+              Weddings, birthdays, launches — the moments that matter, captured as they unfold.
+            </p>
+            <a href="#contact" class="stack-cards__link">DM to discuss rates ↗</a>
+          </div>
         </article>
 
-        <article class="service-card">
-          <div class="service-card__img">
-            <img src="https://picsum.photos/seed/brand-shoot/800/600"
-                 alt="Brand shoot" width="800" height="600" loading="lazy">
+        <article class="stack-cards__item" data-index="1">
+          <div class="stack-cards__img">
+            <img src="images/brand-shoot.jpg"
+                 alt="Brand shoot" width="800" height="600">
           </div>
-          <h3 class="service-card__name">Brand</h3>
-          <p class="service-card__desc">
-            Lookbooks, campaign imagery, social content — your brand, made visible and coherent.
-          </p>
-          <a href="#contact" class="service-card__link">DM to discuss rates ↗</a>
+          <div class="stack-cards__body">
+            <h3 class="stack-cards__name">Brand</h3>
+            <p class="stack-cards__desc">
+              Lookbooks, campaign imagery, social content — your brand, made visible and coherent.
+            </p>
+            <a href="#contact" class="stack-cards__link">DM to discuss rates ↗</a>
+          </div>
         </article>
 
-        <article class="service-card">
-          <div class="service-card__img">
-            <img src="https://picsum.photos/seed/fashion-editorial/800/600"
-                 alt="Fashion shoot" width="800" height="600" loading="lazy">
+        <article class="stack-cards__item" data-index="2">
+          <div class="stack-cards__img">
+            <img src="images/fashion-editorial.jpg"
+                 alt="Fashion shoot" width="800" height="600">
           </div>
-          <h3 class="service-card__name">Fashion</h3>
-          <p class="service-card__desc">
-            Editorials, personal styling sessions, and creative collaborations for designers and stylists.
-          </p>
-          <a href="#contact" class="service-card__link">DM to discuss rates ↗</a>
+          <div class="stack-cards__body">
+            <h3 class="stack-cards__name">Fashion</h3>
+            <p class="stack-cards__desc">
+              Editorials, personal styling sessions, and creative collaborations for designers and stylists.
+            </p>
+            <a href="#contact" class="stack-cards__link">DM to discuss rates ↗</a>
+          </div>
         </article>
       </div>
     </div>
@@ -128,35 +143,35 @@
 
       <div class="gallery-3d" role="region" aria-label="3D gallery — drag to explore">
         <div class="gallery-3d__stage">
-          <figure class="gallery-3d__item" data-category="events">
-            <img src="https://picsum.photos/seed/event-01/800/1000" alt="Event" width="800" height="1000" loading="lazy">
+          <figure class="gallery-3d__item" data-category="events" data-caption="Event coverage — moments that matter, captured as they unfold.">
+            <img src="images/gallery/event-01.jpg" alt="Event" width="800" height="1000">
           </figure>
-          <figure class="gallery-3d__item" data-category="brand">
-            <img src="https://picsum.photos/seed/brand-01/800/600" alt="Brand" width="800" height="600" loading="lazy">
+          <figure class="gallery-3d__item" data-category="brand" data-caption="Brand shoot — campaign imagery with intention.">
+            <img src="images/gallery/brand-01.jpg" alt="Brand" width="800" height="600">
           </figure>
-          <figure class="gallery-3d__item" data-category="fashion">
-            <img src="https://picsum.photos/seed/fashion-01/800/1000" alt="Fashion" width="800" height="1000" loading="lazy">
+          <figure class="gallery-3d__item" data-category="fashion" data-caption="Fashion editorial — creative collaborations for designers and stylists.">
+            <img src="images/gallery/fashion-01.jpg" alt="Fashion" width="800" height="1000">
           </figure>
-          <figure class="gallery-3d__item" data-category="events">
-            <img src="https://picsum.photos/seed/event-02/800/800" alt="Event" width="800" height="800" loading="lazy">
+          <figure class="gallery-3d__item" data-category="events" data-caption="Event — authentic moments, beautifully framed.">
+            <img src="images/gallery/event-02.jpg" alt="Event" width="800" height="800">
           </figure>
-          <figure class="gallery-3d__item" data-category="brand">
-            <img src="https://picsum.photos/seed/brand-02/800/600" alt="Brand" width="800" height="600" loading="lazy">
+          <figure class="gallery-3d__item" data-category="brand" data-caption="Brand — visual storytelling for modern businesses.">
+            <img src="images/gallery/brand-02.jpg" alt="Brand" width="800" height="600">
           </figure>
-          <figure class="gallery-3d__item" data-category="fashion">
-            <img src="https://picsum.photos/seed/fashion-02/800/1000" alt="Fashion" width="800" height="1000" loading="lazy">
+          <figure class="gallery-3d__item" data-category="fashion" data-caption="Fashion — style and substance in every frame.">
+            <img src="images/gallery/fashion-02.jpg" alt="Fashion" width="800" height="1000">
           </figure>
-          <figure class="gallery-3d__item" data-category="events">
-            <img src="https://picsum.photos/seed/event-03/800/600" alt="Event" width="800" height="600" loading="lazy">
+          <figure class="gallery-3d__item" data-category="events" data-caption="Event — candid and editorial coverage.">
+            <img src="images/gallery/event-03.jpg" alt="Event" width="800" height="600">
           </figure>
-          <figure class="gallery-3d__item" data-category="brand">
-            <img src="https://picsum.photos/seed/brand-03/800/1000" alt="Brand" width="800" height="1000" loading="lazy">
+          <figure class="gallery-3d__item" data-category="brand" data-caption="Brand — coherent, polished visual identity.">
+            <img src="images/gallery/brand-03.jpg" alt="Brand" width="800" height="1000">
           </figure>
-          <figure class="gallery-3d__item" data-category="fashion">
-            <img src="https://picsum.photos/seed/fashion-03/800/800" alt="Fashion" width="800" height="800" loading="lazy">
+          <figure class="gallery-3d__item" data-category="fashion" data-caption="Fashion — editorial storytelling through portraiture.">
+            <img src="images/gallery/fashion-03.jpg" alt="Fashion" width="800" height="800">
           </figure>
         </div>
-        <p class="gallery-3d__hint">drag to explore</p>
+        <p class="gallery-3d__hint">Scroll →</p>
       </div>
     </div>
   </section>
@@ -174,6 +189,7 @@
         </p>
         <div class="contact__actions">
           <a href="mailto:hello@nolascaptures.com" class="btn btn--primary">Send an email</a>
+          <a href="https://wa.me/2348000000000?text=Hi%20Nola%2C%20I'd%20love%20to%20discuss%20a%20shoot" target="_blank" rel="noopener" class="btn btn--ghost">WhatsApp ↗</a>
           <a href="https://instagram.com" target="_blank" rel="noopener" class="btn btn--ghost">Instagram DM ↗</a>
         </div>
         <p class="contact__email-row">
@@ -195,6 +211,8 @@
     </div>
   </footer>
 
+  <span class="credit">Code by Oracule</span>
+
   <!-- ============================================================
        LIGHTBOX (hidden until opened)
        ============================================================ -->
@@ -203,15 +221,16 @@
     <button class="lightbox__prev" id="lightbox-prev" aria-label="Previous">←</button>
     <button class="lightbox__next" id="lightbox-next" aria-label="Next">→</button>
     <img class="lightbox__img" id="lightbox-img" alt="">
+    <p class="lightbox__caption" id="lightbox-caption"></p>
     <p class="lightbox__counter" id="lightbox-counter"></p>
   </div>
 
   <!-- ============================================================
        SCRIPTS — vanilla, no framework
        ============================================================ -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/vendor/vanilla-tilt.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
