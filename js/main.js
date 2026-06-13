@@ -476,42 +476,44 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
 })();
 
 /* ══════════════════════════════════════════════════════════════
-   7. Testimonials — auto-scroll marquee
+   7. Testimonials — multi-row auto-scroll marquee
    ══════════════════════════════════════════════════════════════ */
 (function() {
-  var track = document.getElementById('reviews-track');
-  if (!track) return;
-  var cards = track.querySelectorAll('.reviews__card');
-  if (cards.length < 2) return;
+  var tracks = document.querySelectorAll('.reviews__track');
+  if (!tracks.length) return;
 
-  // Clone all cards once for seamless loop
-  cards.forEach(function(c) { track.appendChild(c.cloneNode(true)); });
+  tracks.forEach(function(track) {
+    var cards = track.querySelectorAll('.reviews__card');
+    if (cards.length < 2) return;
 
-  var speed = 0.7; // px per frame
-  var paused = false;
-  var raf = null;
+    // Clone all cards for seamless loop
+    cards.forEach(function(c) { track.appendChild(c.cloneNode(true)); });
 
-  function tick() {
-    if (!paused) {
-      track.scrollLeft += speed;
-      // Reset when halfway (original set consumed)
-      if (track.scrollLeft >= track.scrollWidth / 2) {
-        track.scrollLeft = 0;
+    var dir = parseFloat(track.getAttribute('data-dir')) || -1; // -1 = left, 1 = right
+    var speed = 0.6 * dir;
+    var paused = false;
+    var raf = null;
+
+    function tick() {
+      if (!paused) {
+        track.scrollLeft += speed;
+        var half = track.scrollWidth / 2;
+        if (dir < 0 && track.scrollLeft >= half) track.scrollLeft = 0;
+        if (dir > 0 && track.scrollLeft <= 0) track.scrollLeft = half;
       }
+      raf = requestAnimationFrame(tick);
     }
+
+    var wrap = track.parentElement;
+    if (wrap) {
+      wrap.addEventListener('mouseenter', function() { paused = true; });
+      wrap.addEventListener('mouseleave', function() { paused = false; });
+      wrap.addEventListener('touchstart', function() { paused = true; }, { passive: true });
+      wrap.addEventListener('touchend', function() { paused = false; }, { passive: true });
+    }
+
     raf = requestAnimationFrame(tick);
-  }
-
-  // Pause on hover/touch
-  var wrap = track.parentElement;
-  if (wrap) {
-    wrap.addEventListener('mouseenter', function() { paused = true; });
-    wrap.addEventListener('mouseleave', function() { paused = false; });
-    wrap.addEventListener('touchstart', function() { paused = true; }, { passive: true });
-    wrap.addEventListener('touchend', function() { paused = false; }, { passive: true });
-  }
-
-  raf = requestAnimationFrame(tick);
+  });
 })();
 
 /* ══════════════════════════════════════════════════════════════

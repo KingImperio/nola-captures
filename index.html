@@ -204,57 +204,106 @@
   </section>
 
   <!-- ============================================================
-       REVIEWS — scrolling testimonial marquee
+       REVIEWS — multi-row scrolling marquee wall
        ============================================================ -->
   <section class="section section--raised" id="reviews" aria-label="Client reviews">
     <div class="container">
       <h2 class="section-title section-title--center">Kind words</h2>
     </div>
-    <div class="reviews__track-wrap">
-      <div class="reviews__track" id="reviews-track" role="list">
-        <!-- Copy any <article> block below to add a new review -->
-        <article class="reviews__card" role="listitem">
-          <p class="reviews__text">"Nola made the whole shoot feel effortless. The photos exceeded every expectation — warm, natural, and completely us."</p>
-          <div class="reviews__author">
-            <span class="reviews__avatar">T</span>
-            <span class="reviews__name">Temi &amp; Dami</span>
-          </div>
-        </article>
-        <article class="reviews__card" role="listitem">
-          <p class="reviews__text">"She has a way of capturing mood that most photographers miss. Our brand campaign finally looks and feels the way we imagined."</p>
-          <div class="reviews__author">
-            <span class="reviews__avatar">S</span>
-            <span class="reviews__name">Sola — Studio 54</span>
-          </div>
-        </article>
-        <article class="reviews__card" role="listitem">
-          <p class="reviews__text">"I was nervous in front of the camera but Nola made it fun. The results? Stunning. I've never felt more confident in my own skin."</p>
-          <div class="reviews__author">
-            <span class="reviews__avatar">K</span>
-            <span class="reviews__name">Kemi</span>
-          </div>
-        </article>
-        <article class="reviews__card" role="listitem">
-          <p class="reviews__text">"From pre-production to delivery, everything was seamless. Nola understood the brief immediately and brought our vision to life."</p>
-          <div class="reviews__author">
-            <span class="reviews__avatar">M</span>
-            <span class="reviews__name">Mira — Luxe Haus</span>
-          </div>
-        </article>
-        <article class="reviews__card" role="listitem">
-          <p class="reviews__text">"We've worked with a lot of photographers. Nola stands out — she listens, she's patient, and her eye is next-level."</p>
-          <div class="reviews__author">
-            <span class="reviews__avatar">F</span>
-            <span class="reviews__name">Fola &amp; Co.</span>
-          </div>
-        </article>
-        <article class="reviews__card" role="listitem">
-          <p class="reviews__text">"The fashion editorial she shot for us is still the most engaged post we've ever had. Pure magic."</p>
-          <div class="reviews__author">
-            <span class="reviews__avatar">Z</span>
-            <span class="reviews__name">Zara — Edit Mag</span>
-          </div>
-        </article>
+
+    <!-- Row 1 — scrolls left -->
+    <div class="reviews__row">
+      <div class="reviews__track-wrap">
+        <div class="reviews__track" data-dir="-1" role="list">
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"Nola made the whole shoot feel effortless. The photos exceeded every expectation — warm, natural, and completely us."</p>
+            <div class="reviews__author"><span class="reviews__avatar">T</span><span class="reviews__name">Temi &amp; Dami</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"She has a way of capturing mood that most photographers miss. Our brand campaign finally looks and feels the way we imagined."</p>
+            <div class="reviews__author"><span class="reviews__avatar">S</span><span class="reviews__name">Sola — Studio 54</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"I was nervous in front of the camera but Nola made it fun. The results? Stunning."</p>
+            <div class="reviews__author"><span class="reviews__avatar">K</span><span class="reviews__name">Kemi</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"From pre-production to delivery, everything was seamless. Nola understood the brief immediately."</p>
+            <div class="reviews__author"><span class="reviews__avatar">M</span><span class="reviews__name">Mira — Luxe Haus</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"We've worked with a lot of photographers. Nola stands out — she listens, and her eye is next-level."</p>
+            <div class="reviews__author"><span class="reviews__avatar">F</span><span class="reviews__name">Fola &amp; Co.</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"The fashion editorial she shot is still the most engaged post we've ever had. Pure magic."</p>
+            <div class="reviews__author"><span class="reviews__avatar">Z</span><span class="reviews__name">Zara — Edit Mag</span></div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 — scrolls right -->
+    <div class="reviews__row">
+      <div class="reviews__track-wrap">
+        <div class="reviews__track" data-dir="1" role="list">
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"Working with Nola was an incredible experience. The final images told our story better than we ever could."</p>
+            <div class="reviews__author"><span class="reviews__avatar">A</span><span class="reviews__name">Ade — Blank Canvas</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"She brought such warmth and professionalism to our event. Guests barely noticed her but the photos are extraordinary."</p>
+            <div class="reviews__author"><span class="reviews__avatar">C</span><span class="reviews__name">Chioma</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"Nola has a gift for making you feel comfortable. The images are raw, honest, and beautiful — exactly what we wanted."</p>
+            <div class="reviews__author"><span class="reviews__avatar">E</span><span class="reviews__name">Efe</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"Our brand shoot was seamless. Nola arrived prepared, understood our vision, and delivered beyond expectations."</p>
+            <div class="reviews__author"><span class="reviews__avatar">B</span><span class="reviews__name">Bisi — The Loft</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"The most patient photographer I've ever worked with. She waited for the right light, the right moment — and it paid off."</p>
+            <div class="reviews__author"><span class="reviews__avatar">D</span><span class="reviews__name">Deola</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"Nola's editorial work has completely elevated our lookbook. Every brand needs her eye."</p>
+            <div class="reviews__author"><span class="reviews__avatar">W</span><span class="reviews__name">Wale</span></div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 — scrolls left -->
+    <div class="reviews__row">
+      <div class="reviews__track-wrap">
+        <div class="reviews__track" data-dir="-1" role="list">
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"I've never seen anyone work a room the way Nola does. She's invisible until you see the photos — then you realise she saw everything."</p>
+            <div class="reviews__author"><span class="reviews__avatar">L</span><span class="reviews__name">Lara</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"The attention to detail is unreal. Nola noticed things in our space we'd never seen and made them the highlight."</p>
+            <div class="reviews__author"><span class="reviews__avatar">Y</span><span class="reviews__name">Yemi — Noir Studio</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"Our destination shoot was logistically complex but Nola handled everything with grace. The results are a dream."</p>
+            <div class="reviews__author"><span class="reviews__avatar">N</span><span class="reviews__name">Nneka</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"I've referred Nola to three friends already. Her consistency is unmatched — every shoot is as good as the last."</p>
+            <div class="reviews__author"><span class="reviews__avatar">J</span><span class="reviews__name">Jide</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"The fashion editorial Nola created for our campaign launch drove real engagement. Clients felt the story."</p>
+            <div class="reviews__author"><span class="reviews__avatar">T</span><span class="reviews__name">Tara — Style Haus</span></div>
+          </article>
+          <article class="reviews__card" role="listitem">
+            <p class="reviews__text">"She made our wedding day feel unhurried. The photos arrived faster than promised and left us in tears."</p>
+            <div class="reviews__author"><span class="reviews__avatar">R</span><span class="reviews__name">Remy &amp; Kunle</span></div>
+          </article>
+        </div>
       </div>
     </div>
   </section>
