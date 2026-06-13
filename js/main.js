@@ -476,7 +476,46 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
 })();
 
 /* ══════════════════════════════════════════════════════════════
-   7. Copy email
+   7. Testimonials — auto-scroll marquee
+   ══════════════════════════════════════════════════════════════ */
+(function() {
+  var track = document.getElementById('reviews-track');
+  if (!track) return;
+  var cards = track.querySelectorAll('.reviews__card');
+  if (cards.length < 2) return;
+
+  // Clone all cards once for seamless loop
+  cards.forEach(function(c) { track.appendChild(c.cloneNode(true)); });
+
+  var speed = 0.7; // px per frame
+  var paused = false;
+  var raf = null;
+
+  function tick() {
+    if (!paused) {
+      track.scrollLeft += speed;
+      // Reset when halfway (original set consumed)
+      if (track.scrollLeft >= track.scrollWidth / 2) {
+        track.scrollLeft = 0;
+      }
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  // Pause on hover/touch
+  var wrap = track.parentElement;
+  if (wrap) {
+    wrap.addEventListener('mouseenter', function() { paused = true; });
+    wrap.addEventListener('mouseleave', function() { paused = false; });
+    wrap.addEventListener('touchstart', function() { paused = true; }, { passive: true });
+    wrap.addEventListener('touchend', function() { paused = false; }, { passive: true });
+  }
+
+  raf = requestAnimationFrame(tick);
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   8. Copy email
    ══════════════════════════════════════════════════════════════ */
 (function() {
   var email = $('.contact__email');
