@@ -4,9 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Nola's Captures — professional event, brand, and fashion photography. Lagos-based visual storyteller.">
+  <meta property="og:url" content="https://kingimperio.github.io/nola-captures/">
+  <meta property="og:type" content="website">
   <meta property="og:title" content="Nola's Captures">
   <meta property="og:description" content="Event, brand & fashion photography — shot with intention, edited with care.">
+  <meta property="og:image" content="https://kingimperio.github.io/nola-captures/images/about.jpg">
+  <meta property="og:image:width" content="600">
+  <meta property="og:image:height" content="800">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Nola's Captures</title>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Photographer",
+    "name": "Nola's Captures",
+    "description": "Event, brand & fashion photography — shot with intention, edited with care.",
+    "url": "https://kingimperio.github.io/nola-captures/",
+    "image": "https://kingimperio.github.io/nola-captures/images/about.jpg",
+    "address": { "@type": "PostalAddress", "addressLocality": "Lagos", "addressCountry": "NG" }
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,6 +67,7 @@
         <a href="#about" class="btn btn--primary">Explore</a>
       </div>
     </div>
+    <button class="shader-toggle" id="shader-toggle" aria-label="Pause background animation">⏸</button>
   </section>
 
   <!-- ============================================================
@@ -59,8 +78,8 @@
       <div class="about">
         <div class="about__image" data-tilt data-tilt-max="4" data-tilt-glare="true">
           <img src="images/about.jpg"
-               alt="Aarinola behind the camera"
-               width="600" height="800">
+           alt="Aarinola behind the camera"
+                width="600" height="800" loading="lazy" decoding="async">
         </div>
         <div class="about__body">
           <h2 class="section-title">The eye behind the lens</h2>
@@ -92,7 +111,7 @@
         <article class="stack-cards__item" data-index="0">
           <div class="stack-cards__img">
             <img src="images/event-cover.jpg"
-                 alt="Event coverage" width="800" height="600">
+                 alt="Event coverage" width="800" height="600" loading="lazy" decoding="async">
           </div>
           <div class="stack-cards__body">
             <h3 class="stack-cards__name">Events</h3>
@@ -106,7 +125,7 @@
         <article class="stack-cards__item" data-index="1">
           <div class="stack-cards__img">
             <img src="images/brand-shoot.jpg"
-                 alt="Brand shoot" width="800" height="600">
+                 alt="Brand shoot" width="800" height="600" loading="lazy" decoding="async">
           </div>
           <div class="stack-cards__body">
             <h3 class="stack-cards__name">Brand</h3>
@@ -120,7 +139,7 @@
         <article class="stack-cards__item" data-index="2">
           <div class="stack-cards__img">
             <img src="images/fashion-editorial.jpg"
-                 alt="Fashion shoot" width="800" height="600">
+                 alt="Fashion shoot" width="800" height="600" loading="lazy" decoding="async">
           </div>
           <div class="stack-cards__body">
             <h3 class="stack-cards__name">Fashion</h3>
@@ -144,31 +163,31 @@
       <div class="gallery-3d" role="region" aria-label="Horizontal image gallery — drag to explore">
         <div class="gallery-3d__stage">
           <figure class="gallery-3d__item" data-category="events" data-caption="Event coverage — moments that matter, captured as they unfold.">
-            <img src="images/gallery/event-01.jpg" alt="Event" width="800" height="1000">
+            <img src="images/gallery/event-01.jpg" alt="Event" width="800" height="1000" loading="lazy" decoding="async">
           </figure>
           <figure class="gallery-3d__item" data-category="brand" data-caption="Brand shoot — campaign imagery with intention.">
-            <img src="images/gallery/brand-01.jpg" alt="Brand" width="800" height="600" loading="lazy">
+            <img src="images/gallery/brand-01.jpg" alt="Brand" width="800" height="600" loading="lazy" decoding="async">
           </figure>
           <figure class="gallery-3d__item" data-category="fashion" data-caption="Fashion editorial — creative collaborations for designers and stylists.">
-            <img src="images/gallery/fashion-01.jpg" alt="Fashion" width="800" height="1000" loading="lazy">
+            <img src="images/gallery/fashion-01.jpg" alt="Fashion" width="800" height="1000" loading="lazy" decoding="async">
           </figure>
           <figure class="gallery-3d__item" data-category="events" data-caption="Event — authentic moments, beautifully framed.">
-            <img src="images/gallery/event-02.jpg" alt="Event" width="800" height="800" loading="lazy">
+            <img src="images/gallery/event-02.jpg" alt="Event" width="800" height="800" loading="lazy" decoding="async">
           </figure>
           <figure class="gallery-3d__item" data-category="brand" data-caption="Brand — visual storytelling for modern businesses.">
-            <img src="images/gallery/brand-02.jpg" alt="Brand" width="800" height="600" loading="lazy">
+            <img src="images/gallery/brand-02.jpg" alt="Brand" width="800" height="600" loading="lazy" decoding="async">
           </figure>
           <figure class="gallery-3d__item" data-category="fashion" data-caption="Fashion — style and substance in every frame.">
-            <img src="images/gallery/fashion-02.jpg" alt="Fashion" width="800" height="1000" loading="lazy">
+            <img src="images/gallery/fashion-02.jpg" alt="Fashion" width="800" height="1000" loading="lazy" decoding="async">
           </figure>
           <figure class="gallery-3d__item" data-category="events" data-caption="Event — candid and editorial coverage.">
-            <img src="images/gallery/event-03.jpg" alt="Event" width="800" height="600" loading="lazy">
+            <img src="images/gallery/event-03.jpg" alt="Event" width="800" height="600" loading="lazy" decoding="async">
           </figure>
           <figure class="gallery-3d__item" data-category="brand" data-caption="Brand — coherent, polished visual identity.">
-            <img src="images/gallery/brand-03.jpg" alt="Brand" width="800" height="1000" loading="lazy">
+            <img src="images/gallery/brand-03.jpg" alt="Brand" width="800" height="1000" loading="lazy" decoding="async">
           </figure>
           <figure class="gallery-3d__item" data-category="fashion" data-caption="Fashion — editorial storytelling through portraiture.">
-            <img src="images/gallery/fashion-03.jpg" alt="Fashion" width="800" height="800" loading="lazy">
+            <img src="images/gallery/fashion-03.jpg" alt="Fashion" width="800" height="800" loading="lazy" decoding="async">
           </figure>
         </div>
         <p class="gallery-3d__hint">Scroll →</p>
@@ -216,7 +235,7 @@
   <!-- ============================================================
        LIGHTBOX (hidden until opened)
        ============================================================ -->
-  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image lightbox">
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image lightbox" aria-modal="true">
     <button class="lightbox__close" id="lightbox-close" aria-label="Close">✕</button>
     <button class="lightbox__prev" id="lightbox-prev" aria-label="Previous">←</button>
     <button class="lightbox__next" id="lightbox-next" aria-label="Next">→</button>

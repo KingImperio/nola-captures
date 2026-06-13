@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kingimperio.github.io/nola-captures/sitemap.xml

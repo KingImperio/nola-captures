@@ -78,6 +78,18 @@ const $$ = (s, c) => [...(c || document).querySelectorAll(s)];
     rawY = 1.0 - (e.clientY - r.top) / r.height;
   }, { passive: true });
 
+  // Pause state — respect reduced motion, allow manual toggle
+  var paused = !MOTION_OK;
+  var toggleBtn = document.getElementById('shader-toggle');
+  if (toggleBtn) {
+    toggleBtn.textContent = paused ? '▶' : '⏸';
+    toggleBtn.addEventListener('click', function() {
+      paused = !paused;
+      toggleBtn.textContent = paused ? '▶' : '⏸';
+      toggleBtn.setAttribute('aria-label', paused ? 'Resume background animation' : 'Pause background animation');
+    });
+  }
+
   function resize() {
     var w = mount.clientWidth || window.innerWidth;
     var h = mount.clientHeight || window.innerHeight;
@@ -90,6 +102,7 @@ const $$ = (s, c) => [...(c || document).querySelectorAll(s)];
 
   function tick(ts) {
     requestAnimationFrame(tick);
+    if (paused) return;
     sx += (rawX - sx) * 0.055;
     sy += (rawY - sy) * 0.055;
     resize();
@@ -263,7 +276,7 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
 (function() {
   var box = $('.lightbox'), img = $('#lightbox-img');
   var close = $('#lightbox-close'), prev = $('#lightbox-prev'), next = $('#lightbox-next'), cnt = $('#lightbox-counter'), cap = $('#lightbox-caption');
-  var items = [], idx = -1;
+  var items = [], idx = -1, lastFocused = null;
 
   function preloadAdjacent(i) {
     if (!items.length) return;
@@ -284,6 +297,7 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
   }
   function open(list, i) {
     items = list; idx = i;
+    lastFocused = document.activeElement;
     render();
     box.classList.add('lightbox--open');
     box.setAttribute('aria-hidden', 'false');
@@ -295,6 +309,10 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
     box.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     items = []; idx = -1;
+    if (lastFocused && lastFocused.focus) {
+      lastFocused.focus();
+      lastFocused = null;
+    }
   }
   function prevImg() { if (items.length) { idx = (idx - 1 + items.length) % items.length; render(); } }
   function nextImg() { if (items.length) { idx = (idx + 1) % items.length; render(); } }
@@ -303,6 +321,21 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
   if (prev) prev.addEventListener('click', prevImg);
   if (next) next.addEventListener('click', nextImg);
   if (box) box.addEventListener('click', function(e) { if (e.target === box) closeBox(); });
+
+  // Trap focus within lightbox
+  box.addEventListener('keydown', function(e) {
+    if (e.key !== 'Tab') return;
+    var focusable = box.querySelectorAll('button');
+    if (!focusable.length) return;
+    var first = focusable[0], lastFocusable = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      lastFocusable.focus();
+    } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
 
   document.addEventListener('keydown', function(e) {
     if (!box.classList.contains('lightbox--open')) return;
@@ -425,13 +458,17 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
     stage.style.cursor = 'grabbing';
     paused = true;
   });
-  stage.addEventListener('mouseleave', function() { isDown = false; stage.style.cursor = 'grab'; paused = false; });
+  stage.addEventListener('mouseleave', function() { isDown = false; stage.style.cursor = 'grab'; });
   stage.addEventListener('mouseup', function() { isDown = false; stage.style.cursor = 'grab'; paused = false; });
   stage.addEventListener('mousemove', function(e) {
     if (!isDown) return;
     e.preventDefault();
     stage.scrollLeft = dragStartScroll - (e.pageX - stage.offsetLeft - dragStartX);
   });
+
+  // Pause on hover (desktop)
+  stage.addEventListener('mouseenter', function() { paused = true; });
+  stage.addEventListener('mouseleave', function() { if (!isDown) paused = false; });
 
   // Drag-to-scroll (touch)
   var touchStartX = 0, touchDragScroll = 0;
