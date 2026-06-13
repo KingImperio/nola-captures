@@ -479,38 +479,40 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
    7. Testimonials — multi-row auto-scroll marquee
    ══════════════════════════════════════════════════════════════ */
 (function() {
-  var tracks = document.querySelectorAll('.reviews__track');
-  if (!tracks.length) return;
+  var wraps = document.querySelectorAll('.reviews__track-wrap');
+  if (!wraps.length) return;
 
-  tracks.forEach(function(track) {
+  wraps.forEach(function(wrap) {
+    var track = wrap.querySelector('.reviews__track');
+    if (!track) return;
     var cards = track.querySelectorAll('.reviews__card');
     if (cards.length < 2) return;
 
     // Clone all cards for seamless loop
     cards.forEach(function(c) { track.appendChild(c.cloneNode(true)); });
 
-    var dir = parseFloat(track.getAttribute('data-dir')) || -1; // -1 = left, 1 = right
-    var speed = 0.6 * dir;
+    var dir = parseFloat(track.getAttribute('data-dir')) || -1;
+    var speed = 0.6;
     var paused = false;
     var raf = null;
 
     function tick() {
       if (!paused) {
-        track.scrollLeft += speed;
-        var half = track.scrollWidth / 2;
-        if (dir < 0 && track.scrollLeft >= half) track.scrollLeft = 0;
-        if (dir > 0 && track.scrollLeft <= 0) track.scrollLeft = half;
+        if (dir < 0) {
+          wrap.scrollLeft += speed;
+          if (wrap.scrollLeft >= wrap.scrollWidth / 2) wrap.scrollLeft = 0;
+        } else {
+          wrap.scrollLeft -= speed;
+          if (wrap.scrollLeft <= 0) wrap.scrollLeft = wrap.scrollWidth / 2;
+        }
       }
       raf = requestAnimationFrame(tick);
     }
 
-    var wrap = track.parentElement;
-    if (wrap) {
-      wrap.addEventListener('mouseenter', function() { paused = true; });
-      wrap.addEventListener('mouseleave', function() { paused = false; });
-      wrap.addEventListener('touchstart', function() { paused = true; }, { passive: true });
-      wrap.addEventListener('touchend', function() { paused = false; }, { passive: true });
-    }
+    wrap.addEventListener('mouseenter', function() { paused = true; });
+    wrap.addEventListener('mouseleave', function() { paused = false; });
+    wrap.addEventListener('touchstart', function() { paused = true; }, { passive: true });
+    wrap.addEventListener('touchend', function() { paused = false; }, { passive: true });
 
     raf = requestAnimationFrame(tick);
   });
