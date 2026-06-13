@@ -479,12 +479,10 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
    7. Testimonials — multi-row auto-scroll marquee
    ══════════════════════════════════════════════════════════════ */
 (function() {
-  var wraps = document.querySelectorAll('.reviews__track-wrap');
-  if (!wraps.length) return;
+  var tracks = document.querySelectorAll('.reviews__track');
+  if (!tracks.length) return;
 
-  wraps.forEach(function(wrap) {
-    var track = wrap.querySelector('.reviews__track');
-    if (!track) return;
+  tracks.forEach(function(track) {
     var cards = track.querySelectorAll('.reviews__card');
     if (cards.length < 2) return;
 
@@ -492,27 +490,32 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
     cards.forEach(function(c) { track.appendChild(c.cloneNode(true)); });
 
     var dir = parseFloat(track.getAttribute('data-dir')) || -1;
-    var speed = 0.6;
+    var speed = 0.5;
+    var totalW = track.scrollWidth / 2;
+    var pos = dir > 0 ? -totalW : 0;
     var paused = false;
     var raf = null;
 
+    track.style.transform = 'translateX(' + pos + 'px)';
+    track.style.willChange = 'transform';
+
     function tick() {
       if (!paused) {
-        if (dir < 0) {
-          wrap.scrollLeft += speed;
-          if (wrap.scrollLeft >= wrap.scrollWidth / 2) wrap.scrollLeft = 0;
-        } else {
-          wrap.scrollLeft -= speed;
-          if (wrap.scrollLeft <= 0) wrap.scrollLeft = wrap.scrollWidth / 2;
-        }
+        pos += speed * dir;
+        if (pos < -totalW) pos = 0;
+        if (pos > 0) pos = -totalW;
+        track.style.transform = 'translateX(' + pos + 'px)';
       }
       raf = requestAnimationFrame(tick);
     }
 
-    wrap.addEventListener('mouseenter', function() { paused = true; });
-    wrap.addEventListener('mouseleave', function() { paused = false; });
-    wrap.addEventListener('touchstart', function() { paused = true; }, { passive: true });
-    wrap.addEventListener('touchend', function() { paused = false; }, { passive: true });
+    var wrap = track.closest('.reviews__track-wrap');
+    if (wrap) {
+      wrap.addEventListener('mouseenter', function() { paused = true; });
+      wrap.addEventListener('mouseleave', function() { paused = false; });
+      wrap.addEventListener('touchstart', function() { paused = true; }, { passive: true });
+      wrap.addEventListener('touchend', function() { paused = false; }, { passive: true });
+    }
 
     raf = requestAnimationFrame(tick);
   });
