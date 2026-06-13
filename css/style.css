@@ -619,11 +619,8 @@ body {
 }
 .reviews__avatar {
   width: 30px; height: 30px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--accent);
-  color: var(--text-light);
-  font-size: 12px; font-weight: 500;
   border-radius: 50%;
+  object-fit: cover;
   flex-shrink: 0;
 }
 .reviews__name {
