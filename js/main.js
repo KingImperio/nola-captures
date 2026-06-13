@@ -112,21 +112,84 @@ const $$ = (s, c) => [...(c || document).querySelectorAll(s)];
   window.addEventListener('scroll', update, { passive: true });
   update();
 
-  // Mobile menu toggle
   var menuBtn = $('#menu-btn');
-  if (menuBtn) {
-    menuBtn.addEventListener('click', function() {
-      nav.classList.toggle('navbar--menu-open');
-      menuBtn.textContent = nav.classList.contains('navbar--menu-open') ? 'Close' : 'Menu';
-    });
-    // Close menu on link click
-    nav.addEventListener('click', function(e) {
-      if (e.target.closest('.navbar__link')) {
-        nav.classList.remove('navbar--menu-open');
-        menuBtn.textContent = 'Menu';
-      }
-    });
+  var links = $('#navbar-links');
+  if (!menuBtn || !links) return;
+
+  // Create backdrop element
+  var backdrop = document.createElement('div');
+  backdrop.className = 'navbar__backdrop';
+  backdrop.setAttribute('aria-hidden', 'true');
+  nav.appendChild(backdrop);
+
+  var lastFocused = null;
+  var focusable = null;
+  var firstFocusable = null;
+  var lastFocusable = null;
+
+  function openMenu() {
+    nav.classList.add('navbar--menu-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    menuBtn.textContent = 'Close';
+    document.body.style.overflow = 'hidden';
+
+    lastFocused = document.activeElement;
+    focusable = links.querySelectorAll('a, button');
+    if (focusable.length) {
+      firstFocusable = focusable[0];
+      lastFocusable = focusable[focusable.length - 1];
+      firstFocusable.focus();
+    }
   }
+
+  function closeMenu() {
+    nav.classList.remove('navbar--menu-open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.textContent = 'Menu';
+    document.body.style.overflow = '';
+
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+    lastFocused = null;
+  }
+
+  menuBtn.addEventListener('click', function() {
+    if (nav.classList.contains('navbar--menu-open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  // Close on backdrop click
+  backdrop.addEventListener('click', closeMenu);
+
+  // Close on link click
+  links.addEventListener('click', function(e) {
+    if (e.target.closest('.navbar__link')) closeMenu();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', function(e) {
+    if (!nav.classList.contains('navbar--menu-open')) return;
+    if (e.key === 'Escape') { closeMenu(); return; }
+  });
+
+  // Focus trap
+  links.addEventListener('keydown', function(e) {
+    if (e.key !== 'Tab') return;
+    if (!focusable || focusable.length < 2) { e.preventDefault(); return; }
+    if (e.shiftKey) {
+      if (document.activeElement === firstFocusable) {
+        e.preventDefault();
+        lastFocusable.focus();
+      }
+    } else {
+      if (document.activeElement === lastFocusable) {
+        e.preventDefault();
+        firstFocusable.focus();
+      }
+    }
+  });
 })();
 
 /* ══════════════════════════════════════════════════════════════
@@ -176,6 +239,24 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
   }
 }
 
+/* ── Stack cards: dynamic container height for stacking ──── */
+(function() {
+  var container = $('.stack-cards');
+  var cards = $$('.stack-cards__item');
+  if (!container || !cards.length) return;
+
+  function sizeStack() {
+    var h = cards[0].offsetHeight;
+    if (h < 10) return;
+    var top = parseInt(getComputedStyle(cards[0]).top, 10) || 100;
+    container.style.height = (h * cards.length + top) + 'px';
+    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+  }
+
+  requestAnimationFrame(sizeStack);
+  window.addEventListener('resize', sizeStack);
+})();
+
 /* ══════════════════════════════════════════════════════════════
    5. Lightbox
    ══════════════════════════════════════════════════════════════ */
@@ -184,6 +265,14 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
   var close = $('#lightbox-close'), prev = $('#lightbox-prev'), next = $('#lightbox-next'), cnt = $('#lightbox-counter'), cap = $('#lightbox-caption');
   var items = [], idx = -1;
 
+  function preloadAdjacent(i) {
+    if (!items.length) return;
+    var p = (i - 1 + items.length) % items.length;
+    var n = (i + 1) % items.length;
+    var a = new Image(); a.src = items[p].dataset.src || items[p].querySelector('img').src;
+    var b = new Image(); b.src = items[n].dataset.src || items[n].querySelector('img').src;
+  }
+
   function render() {
     if (!img || idx < 0) return;
     var cur = items[idx];
@@ -191,6 +280,7 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
     img.alt = cur.querySelector('img').alt;
     if (cnt) cnt.textContent = (idx + 1) + ' / ' + items.length;
     if (cap) cap.textContent = cur.dataset.caption || '';
+    preloadAdjacent(idx);
   }
   function open(list, i) {
     items = list; idx = i;
@@ -206,44 +296,132 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
     document.body.style.overflow = '';
     items = []; idx = -1;
   }
+  function prevImg() { if (items.length) { idx = (idx - 1 + items.length) % items.length; render(); } }
+  function nextImg() { if (items.length) { idx = (idx + 1) % items.length; render(); } }
 
   if (close) close.addEventListener('click', closeBox);
-  if (prev) prev.addEventListener('click', function() { if (items.length) { idx = (idx - 1 + items.length) % items.length; render(); } });
-  if (next) next.addEventListener('click', function() { if (items.length) { idx = (idx + 1) % items.length; render(); } });
+  if (prev) prev.addEventListener('click', prevImg);
+  if (next) next.addEventListener('click', nextImg);
   if (box) box.addEventListener('click', function(e) { if (e.target === box) closeBox(); });
 
   document.addEventListener('keydown', function(e) {
     if (!box.classList.contains('lightbox--open')) return;
     if (e.key === 'Escape') closeBox();
-    if (e.key === 'ArrowLeft') { idx = (idx - 1 + items.length) % items.length; render(); }
-    if (e.key === 'ArrowRight') { idx = (idx + 1) % items.length; render(); }
+    if (e.key === 'ArrowLeft') prevImg();
+    if (e.key === 'ArrowRight') nextImg();
   });
+
+  // Touch swipe navigation
+  var touchX = 0;
+  if (img) {
+    img.addEventListener('touchstart', function(e) {
+      touchX = e.touches[0].clientX;
+    }, { passive: true });
+    img.addEventListener('touchend', function(e) {
+      var diff = touchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) nextImg(); else prevImg();
+      }
+    }, { passive: true });
+  }
 
   window._openLightbox = open;
 })();
 
 /* ══════════════════════════════════════════════════════════════
-   6. Gallery lightbox click + drag-to-scroll
+   6. Gallery lightbox click + drag-to-scroll + seamless loop
    ══════════════════════════════════════════════════════════════ */
 (function() {
   var stage = $('.gallery-3d__stage');
   if (!stage) return;
 
-  // Click → lightbox
-  var figures = $$('.gallery-3d__item', stage);
+  var originals = $$('.gallery-3d__item', stage);
+  if (!originals.length) return;
+  var origCount = originals.length;
+
+  // ── Helpers ────────────────────────────────────────────────
+  function totalWidth(els) {
+    var w = 0;
+    for (var i = 0; i < els.length; i++) w += els[i].offsetWidth || 0;
+    return w;
+  }
+
+  function gapWidth() {
+    return parseFloat(getComputedStyle(stage).gap) || 16;
+  }
+
+  // Seamless loop: clone first 2 and last 2 items
+  (function() {
+    var prepend = [], append = [];
+    for (var i = origCount - 2; i < origCount; i++) {
+      var c = originals[i].cloneNode(true);
+      c.setAttribute('data-clone', '1');
+      prepend.push(c);
+    }
+    for (var i = 0; i < 2; i++) {
+      var c = originals[i].cloneNode(true);
+      c.setAttribute('data-clone', '1');
+      append.push(c);
+    }
+    prepend.forEach(function(el) { stage.insertBefore(el, stage.firstChild); });
+    append.forEach(function(el) { stage.appendChild(el); });
+  })();
+
+  // Click → lightbox (ignore clones)
   stage.addEventListener('click', function(e) {
     var fig = e.target.closest('.gallery-3d__item');
-    if (!fig) return;
-    var i = figures.indexOf(fig);
-    if (i > -1 && window._openLightbox) window._openLightbox(figures, i);
+    if (!fig || fig.hasAttribute('data-clone')) return;
+    var i = originals.indexOf(fig);
+    if (i > -1 && window._openLightbox) window._openLightbox(originals, i);
   });
 
+  // ── Auto carousel — continuous smooth flow ────────────────
+  var paused = false, raf = null, inited = false;
+
+  function tick() {
+    if (!paused) {
+      stage.scrollLeft += 0.7;
+      seamlessJump();
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  // Seamless jump — measure on each frame so it adapts to image loads
+  function seamlessJump() {
+    var g = gapWidth();
+    var origEls = originals;
+    var contentW = totalWidth(origEls) + g * origEls.length;
+    if (!contentW) return;
+
+    var clones = stage.querySelectorAll('.gallery-3d__item[data-clone]');
+    if (!clones.length) return;
+
+    var preW = 0;
+    for (var i = 0; i < Math.min(2, clones.length); i++) preW += clones[i].offsetWidth || 0;
+    var offset = preW + g * 2;
+
+    if (!inited) {
+      stage.scrollLeft = offset;
+      inited = true;
+      return;
+    }
+
+    var end = offset + contentW;
+    if (stage.scrollLeft >= end) {
+      stage.scrollLeft -= contentW;
+    } else if (stage.scrollLeft < 0) {
+      stage.scrollLeft += contentW;
+    }
+  }
+
+  raf = requestAnimationFrame(tick);
+
   // Drag-to-scroll (mouse)
-  var isDown = false, startX = 0, scrollLeft = 0;
+  var isDown = false, dragStartX = 0, dragStartScroll = 0;
   stage.addEventListener('mousedown', function(e) {
     isDown = true;
-    startX = e.pageX - stage.offsetLeft;
-    scrollLeft = stage.scrollLeft;
+    dragStartX = e.pageX - stage.offsetLeft;
+    dragStartScroll = stage.scrollLeft;
     stage.style.cursor = 'grabbing';
     paused = true;
   });
@@ -252,35 +430,21 @@ if (MOTION_OK && typeof gsap !== 'undefined') {
   stage.addEventListener('mousemove', function(e) {
     if (!isDown) return;
     e.preventDefault();
-    stage.scrollLeft = scrollLeft - (e.pageX - stage.offsetLeft - startX);
+    stage.scrollLeft = dragStartScroll - (e.pageX - stage.offsetLeft - dragStartX);
   });
 
   // Drag-to-scroll (touch)
-  var touchStartX = 0, touchScrollLeft = 0;
+  var touchStartX = 0, touchDragScroll = 0;
   stage.addEventListener('touchstart', function(e) {
     touchStartX = e.touches[0].pageX - stage.offsetLeft;
-    touchScrollLeft = stage.scrollLeft;
+    touchDragScroll = stage.scrollLeft;
     paused = true;
   }, { passive: true });
   stage.addEventListener('touchmove', function(e) {
-    stage.scrollLeft = touchScrollLeft - (e.touches[0].pageX - stage.offsetLeft - touchStartX);
+    stage.scrollLeft = touchDragScroll - (e.touches[0].pageX - stage.offsetLeft - touchStartX);
   }, { passive: true });
   stage.addEventListener('touchend', function() { paused = false; });
   stage.addEventListener('touchcancel', function() { paused = false; });
-
-  // ── Auto carousel — continuous smooth flow ────────────────
-  var raf = null, paused = false;
-
-  function tick() {
-    if (!paused) {
-      var maxScroll = stage.scrollWidth - stage.offsetWidth;
-      stage.scrollLeft += 0.7;
-      if (stage.scrollLeft >= maxScroll - 2) stage.scrollLeft = 0;
-    }
-    raf = requestAnimationFrame(tick);
-  }
-
-  raf = requestAnimationFrame(tick);
 })();
 
 /* ══════════════════════════════════════════════════════════════
