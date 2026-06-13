@@ -78,17 +78,8 @@ const $$ = (s, c) => [...(c || document).querySelectorAll(s)];
     rawY = 1.0 - (e.clientY - r.top) / r.height;
   }, { passive: true });
 
-  // Pause state — respect reduced motion, allow manual toggle
+  // Pause state — respect reduced motion
   var paused = !MOTION_OK;
-  var toggleBtn = document.getElementById('shader-toggle');
-  if (toggleBtn) {
-    toggleBtn.textContent = paused ? '▶' : '⏸';
-    toggleBtn.addEventListener('click', function() {
-      paused = !paused;
-      toggleBtn.textContent = paused ? '▶' : '⏸';
-      toggleBtn.setAttribute('aria-label', paused ? 'Resume background animation' : 'Pause background animation');
-    });
-  }
 
   function resize() {
     var w = mount.clientWidth || window.innerWidth;
